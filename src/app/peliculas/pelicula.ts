@@ -16,5 +16,5 @@ export interface PeliculaDTO{
     poster?: string | null;
     generosIds?: number[];
     cinesIds?: number[];
-    actoresSeleted?: ActorSelected[];
+    actoresSelected?: ActorSelected[];
 }

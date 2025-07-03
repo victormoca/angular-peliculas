@@ -7,7 +7,7 @@
     <h2>Selecciona la ubicación del cine</h2>
     <app-mapa 
         (coordinatesChange)="coordenadasSelecionadas($event)"
-        [coordinates]="coordenasIniciales"
+        [coordinates]="coordenadasIniciales"
     ></app-mapa>
     <div class="botones-form">
         <button [disabled]="cineForm.invalid" mat-flat-button type="submit">Guardar</button>

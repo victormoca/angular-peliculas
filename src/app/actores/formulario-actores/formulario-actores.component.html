@@ -5,7 +5,7 @@
         <mat-error>{{getEmptyFieldError()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
-        <mat-label>Fecha de Caducidad</mat-label>
+        <mat-label>Fecha de Nacimiento</mat-label>
         <input matInput [matDatepicker]="picker" [formControl]="form.controls.fechaNacimiento" />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

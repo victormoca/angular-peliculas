@@ -29,7 +29,7 @@ export class FormularioCineComponent implements OnInit {
       
       // Initialize coordinates for the map
       if (this.cineModel.latitud && this.cineModel.longitud) {
-        this.coordenasIniciales = [{
+        this.coordenadasIniciales = [{
           lat: this.cineModel.latitud,
           lng: this.cineModel.longitud
         }];
@@ -49,7 +49,7 @@ export class FormularioCineComponent implements OnInit {
 
   @Input()
   // Add this property to your component class
-  coordenasIniciales: Coordenada[] = [];
+  coordenadasIniciales: Coordenada[] = [];
 
   @Output()
   cinePosted = new EventEmitter<CineInfo>();
