@@ -1,0 +1,12 @@
+<p>{{ title }}</p>
+
+<button mat-raised-button (click)="inputImgFile.click()">Selecciona una imagen</button>
+<input type="file" accept="img*/" (change)="processImage($event)"  #inputImgFile hidden>
+
+<div>
+    @if (base64) {
+        <img class="imagen" [src]="base64" width="160" height="180" alt="">
+    } @else if(srcImageInital) {
+        <img class="imagen" src="{{ srcImageInital }}" width="160" height="180" alt="">
+    }
+</div>

@@ -1,0 +1,47 @@
+<form action="" [formGroup]="form" (submit)="guardando()">
+    <mat-form-field appearance="outline">
+        <mat-label>Titulo</mat-label>
+        <input matInput [formControl]="form.controls.titulo">
+        <mat-error>{{ errorTitulo() }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Trailer</mat-label>
+        <input matInput [formControl]="form.controls.trailer">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Fecha de Lanzamiento</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="form.controls.fechaLanzamiento" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="selector-multiple">
+        <p>Selecciona los Generos</p>
+        <app-selector-multiple
+            [itemsSelected]="itemsSelected"
+            [itemsUnSelected]="itemsUnSelected"
+        ></app-selector-multiple>
+    </div>
+
+    <div class="selector-multiple">
+        <p>Selecciona los Cines</p>
+        <app-selector-multiple
+            [itemsSelected]="cinesSelected"
+            [itemsUnSelected]="cinesUnSelected"
+        ></app-selector-multiple>
+    </div>
+
+    <app-autocomplete-actores [actoresSelected]="actoresSelected">
+
+    </app-autocomplete-actores>
+    
+    <app-input-img 
+        title="Selecciona la portada" 
+        [srcImageInital]="model?.poster"
+        (archivoSeleccionado)="archivoSeleccionado($event)"
+    ></app-input-img>
+    <div class="botones-form">
+        <button mat-flat-button type="submit" >Guardar</button>
+        <a mat-stroked-button routerLink="/">Cancelar</a>
+    </div>
+</form>

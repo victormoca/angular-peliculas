@@ -1,0 +1,17 @@
+<form (submit)="guardarGenero()" [formGroup]="generoForm">
+    <mat-form-field appearance="outline">
+        <mat-label for="">Nombre</mat-label>
+        <input matInput 
+                [formControl]="generoForm.controls.nombre"
+                type="text" 
+                placeholder="Nombre del género"
+        >
+        <mat-error>{{ mensajeErrorNombre() }}</mat-error>
+    </mat-form-field>
+    <div class="botones-form">
+        <button [disabled]="generoForm.invalid" mat-flat-button type="submit">Guardar</button>
+        <a href="" mat-stroked-button routerLink="/generos">Cancelar</a>
+    </div>
+    
+</form>
+

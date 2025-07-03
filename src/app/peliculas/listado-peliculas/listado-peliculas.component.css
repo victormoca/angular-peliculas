@@ -1,0 +1,12 @@
+.contenido-peliculas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+}
+
+.contenido-pelicula {
+    margin-bottom: 15px;
+    margin-left: 2rem;
+    text-align: center;
+}

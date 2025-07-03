@@ -1,0 +1,6 @@
+<p for="">El ID del genero a Editar es: {{ id }}</p>
+
+<app-formulario-generos 
+    (generoFormPosted)="guardarGenero($event)"
+    [modelInfoLoaded]="generoInfoLoaded"
+></app-formulario-generos>

@@ -1,0 +1,23 @@
+<form [formGroup]="form" (submit)="guardarCambios()">
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" [formControl]="form.controls.nombre">
+        <mat-error>{{getEmptyFieldError()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Fecha de Caducidad</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="form.controls.fechaNacimiento" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ getInvalidDateFuture() }}</mat-error>
+    </mat-form-field>
+    <app-input-img 
+        title="Foto del Actor" 
+        (archivoSeleccionado)="archivoSeleccionado($event)"
+        [srcImageInital]="actorModel.foto"
+    ></app-input-img>
+    <div class="botones-form">
+        <button [disabled]="form.invalid" mat-flat-button type="submit">Guardar</button>
+        <a href="" mat-stroked-button routerLink="/actores">Cancelar</a>
+    </div>
+</form>

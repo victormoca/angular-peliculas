@@ -1,0 +1,22 @@
+<div class="contenido-selector-multiple">
+    <ul>
+        @for (item of itemsUnSelected; track $index) {
+            <li [value]="item.value" (click)="select(item, $index)">
+                {{ item.label }}
+            </li>
+        }
+    </ul>
+    <div class ="contenido-botones">
+        <button type="button" (click)="selectAll()">>></button>
+        <button type="button" (click)="unselectAll()"><<</button>
+    </div>
+    
+    <ul>
+        @for (item of itemsSelected; track $index) {
+            <li [value]="item.value" (click)="unselect(item, $index)">
+                {{ item.label }}
+            </li>
+        }
+    </ul>
+</div>
+

@@ -1,1 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Aplica a todos los formularios de la app */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+
+  /* Responsive: centrado y ancho ideal */
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Todos los mat-form-field ocupan el ancho disponible */
+mat-form-field {
+  width: 100%;
+}
+
+/* Aplica a cualquier contenedor de botones dentro de formularios */
+form .button-group,
+form .actions,
+form .botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Los botones no se estiran */
+form button {
+  min-width: 120px;
+  width: auto;
+  align-self: flex-end;
+}
+
+.botones-form button{
+  margin-right: 10px;
+}

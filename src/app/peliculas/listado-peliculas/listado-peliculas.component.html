@@ -1,0 +1,25 @@
+<app-listado-generico [listado]="peliculas">
+  <ng-container contenido>
+    <div class="contenido-peliculas">
+      @for (pelicula of peliculas; track $index) {
+        <div class="contenido-pelicula">
+          <a href="">
+            @if (pelicula.portada) {
+              <img src="{{ pelicula.portada }}" width="220" height="240" alt="">
+            } @else {
+              <img src="default.jpg" width="220" height="240" alt="">
+            }
+          </a>
+          <a href="">
+            <h3 class="titulo-pelicula">{{ pelicula.titulo }}</h3>
+          </a>
+          <div>
+            <button mat-flat-button type="button">Editar</button>
+            <button mat-flat-button class="danger" style="margin-left: 1rem;" type="button">Eliminar</button>
+          </div>
+        </div>
+      }
+    </div>
+  </ng-container>
+</app-listado-generico>
+

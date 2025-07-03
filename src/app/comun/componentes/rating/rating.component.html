@@ -1,0 +1,9 @@
+@for (item of ratingArray; track $index) {
+    <mat-icon 
+    (mouseover)="triggerMouseEnter($index)"
+    (mouseleave)="triggerMouseLeave()"
+    [ngClass]="{illuminated: ratingSelected > $index}"
+    (click)="triggerClick($index)"
+    >star</mat-icon>
+
+}
