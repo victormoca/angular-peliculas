@@ -1,8 +1,8 @@
-import { DatePipe, UpperCasePipe } from '@angular/common';
-import { Component, Input, input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
 import { ListadoGenericoComponent } from "../../comun/componentes/listado-generico/listado-generico.component";
+
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-listado-peliculas',
