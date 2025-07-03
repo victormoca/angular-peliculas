@@ -82,7 +82,7 @@ export class FormularioPeliculaComponent implements OnInit {
     posted.fechaLanzamiento = new Date(this.form.controls.fechaLanzamiento.value ?? '');
     posted.generosIds = this.itemsSelected.map(item => item.value);    
     posted.cinesIds = this.cinesSelected.map(item => item.value);
-    posted.actoresSeleted = this.actoresSelected;
+    posted.actoresSelected = this.actoresSelected;
     this.formPosted.emit(posted);
   }
 
