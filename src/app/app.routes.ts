@@ -12,10 +12,6 @@ import { EditarCineComponent } from './cines/editar-cine/editar-cine.component';
 import { EditarActorComponent } from './actores/editar-actor/editar-actor.component';
 import { EditarPeliculaComponent } from './peliculas/editar-pelicula/editar-pelicula.component';
 import { FiltrosPeliculasComponent } from './peliculas/filtros-peliculas/filtros-peliculas.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
-import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.component';
-import { EditarUsuarioComponent } from './usuarios/editar-usuario/editar-usuario.component';
-
 export const routes: Routes = [
     {path: '', component: LandingPageComponent},
 
@@ -34,10 +30,6 @@ export const routes: Routes = [
     {path:'peliculas/crear', component: CrearPeliculaComponent},
     {path:'peliculas/editar/:id', component: EditarPeliculaComponent},
     {path:'peliculas/filtros', component: FiltrosPeliculasComponent},
-
-    {path:'usuarios', component: UsuariosComponent},
-    {path:'usuarios/crear', component: CrearUsuarioComponent},
-    {path:'usuarios/editar/:id', component: EditarUsuarioComponent},
 
     {path:'**', component: LandingPageComponent},
 ];
