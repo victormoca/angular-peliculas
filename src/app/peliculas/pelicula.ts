@@ -1,5 +1,4 @@
 import { ActorSelected } from "../comun/componentes/autocomplete-actores/ActorSelected";
-import { Item } from "../comun/componentes/selector-multiple/Item";
 
 export interface PeliculaCreacionDTO {
   titulo: string;
