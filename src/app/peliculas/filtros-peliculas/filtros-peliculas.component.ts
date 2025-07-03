@@ -19,7 +19,6 @@ import { ActivatedRoute } from '@angular/router';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
-    ListadoPeliculasComponent,
     ListadoPeliculasComponent
 ],
   templateUrl: './filtros-peliculas.component.html',

@@ -21,7 +21,6 @@ import { ActorSelected } from '../../comun/componentes/autocomplete-actores/Acto
     MatFormFieldModule,
     MatDatepickerModule,
     InputImgComponent,
-    InputImgComponent,
     SelectorMultipleComponent,
     AutocompleteActoresComponent
 ],
