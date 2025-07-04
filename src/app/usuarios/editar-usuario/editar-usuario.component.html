@@ -1,0 +1,6 @@
+<p>El numero de usuario a editar es: {{ id }}</p>
+<app-formulario-usuario
+    (usuarioPosted)="guardarUsuario($event)"
+    [usuarioModel]="usuarioInfo"
+></app-formulario-usuario>
+
