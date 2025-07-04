@@ -15,6 +15,7 @@ import { FiltrosPeliculasComponent } from './peliculas/filtros-peliculas/filtros
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.component';
 import { EditarUsuarioComponent } from './usuarios/editar-usuario/editar-usuario.component';
+
 export const routes: Routes = [
     {path: '', component: LandingPageComponent},
 
@@ -30,13 +31,13 @@ export const routes: Routes = [
     {path:'actores/crear', component: CrearActoresComponent},
     {path:'actores/editar/:id', component: EditarActorComponent},
 
-    {path:'usuarios', component: UsuariosComponent},
-    {path:'usuarios/crear', component: CrearUsuarioComponent},
-    {path:'usuarios/editar/:id', component: EditarUsuarioComponent},
-    
     {path:'peliculas/crear', component: CrearPeliculaComponent},
     {path:'peliculas/editar/:id', component: EditarPeliculaComponent},
     {path:'peliculas/filtros', component: FiltrosPeliculasComponent},
+
+    {path:'usuarios', component: UsuariosComponent},
+    {path:'usuarios/crear', component: CrearUsuarioComponent},
+    {path:'usuarios/editar/:id', component: EditarUsuarioComponent},
 
     {path:'**', component: LandingPageComponent},
 ];
