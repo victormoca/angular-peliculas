@@ -4,6 +4,7 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './app-date-formats';
+import { provideHttpClient } from '@angular/common/http';
 
 // 👇 Registrar el idioma español
 import { registerLocaleData } from '@angular/common';
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideHttpClient(),
 
     provideNativeDateAdapter(), // ✅ Usa el adaptador de fechas nativo
 
