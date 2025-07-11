@@ -5,5 +5,4 @@ export interface GeneroInfoDto {
 export interface GeneroInfo {
   id: number;
   nombre: string;
-  
 }
