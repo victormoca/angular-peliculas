@@ -1,3 +1,4 @@
+
 html, body {
   height: 100%;
   margin: 0;
@@ -40,4 +41,21 @@ form button {
 
 .botones-form button{
   margin-right: 10px;
+}
+
+.mensaje-error {
+  color: red;
+  margin-top: 5px;
+}
+
+table{
+  margin-top: 1rem;
+}
+
+button{
+  margin-left:1rem;
+}
+
+.encabezado-listado{
+  margin-top: 1rem;
 }

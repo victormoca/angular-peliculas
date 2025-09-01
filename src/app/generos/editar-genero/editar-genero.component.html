@@ -1,6 +1,7 @@
-<p for="">El ID del genero a Editar es: {{ id }}</p>
+<app-editar-entidad
+    titulo="Editar Genero"
+    rutaEntidad="/generos"
+    [id]="id"
+    [formulario]="formularioGenero"
+></app-editar-entidad>
 
-<app-formulario-generos 
-    (generoFormPosted)="guardarGenero($event)"
-    [modelInfoLoaded]="generoInfoLoaded"
-></app-formulario-generos>

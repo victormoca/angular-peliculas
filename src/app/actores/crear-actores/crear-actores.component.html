@@ -1,5 +1,5 @@
-<p>Crear Nuevo Actor</p>
-<app-formulario-actores 
-    (actorPosted)="guardarActor($event)"
-    [actorModel]="actorInfo"
-></app-formulario-actores>
+<app-crear-entidad
+    titulo="Crear Actor"
+    rutaEntidad="/actores"
+    [formulario]="formularioActores"
+></app-crear-entidad>

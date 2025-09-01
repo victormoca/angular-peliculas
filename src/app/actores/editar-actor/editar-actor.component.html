@@ -1,6 +1,6 @@
-<p for="">El numero de actor a editar es: {{ id }}</p>
-
-<app-formulario-actores 
-    (actorPosted)="guardarActor($event)" 
-    [actorModel]="actorInfo"
-></app-formulario-actores>
+<app-editar-entidad
+    titulo="Editar Actor"
+    rutaEntidad="/actores"
+    [id]="id"
+    [formulario]="formularioActores"
+></app-editar-entidad>

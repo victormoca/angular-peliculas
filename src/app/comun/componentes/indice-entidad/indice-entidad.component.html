@@ -1,0 +1,57 @@
+<div class="encabezado-contenido">
+    <h1>{{titulo}}</h1>
+<button mat-flat-button type="button" (click)="crearRegistro()">Crear {{titulo
+    }}</button>
+</div>
+<div class="listado">
+<app-moca-error [errors]="errores"></app-moca-error>
+@if (!entidades) {
+    <app-cargando></app-cargando>
+}@else {
+<app-listado-generico [listado]="entidades">
+    <ng-container contenido>
+        <table mat-table [dataSource]="entidades" class="mat-elevation-z8">
+            @for (col of columnasAMostrar; track $index) {
+                <tr>{{col}}</tr>
+                @if (col != 'acciones') {
+                    <ng-container matColumnDef="{{col}}">
+                        <th mat-header-cell *matHeaderCellDef>{{col}}</th>
+                        <td mat-cell *matCellDef="let item">{{item[col]}}</td>
+                    </ng-container>
+                }@else {
+                    <ng-container matColumnDef="acciones" class="mat-elevation-z8">
+                        <th mat-header-cell *matHeaderCellDef>{{col}}</th>
+                        <td mat-cell *matCellDef="let item">
+                            <a mat-flat-button routerLink="{{rutaEditar}}{{item.id}}">Editar</a>
+                            <button mat-flat-button class="danger"
+                            [swal]="
+                                {
+                                    title:'Confirmación',
+                                    text:'Desea realmente eliminar',
+                                    showCancelButton:true
+                                }
+                            "
+                            (confirm)="eliminarRegistro(item.id)"
+                            >Borrar</button>
+                        </td>
+                    </ng-container>
+                }
+            }
+            <tr mat-header-row *matHeaderRowDef="columnasAMostrar"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasAMostrar"></tr>
+            
+        </table>
+        <mat-paginator showFirstLastButtons
+            [length]="cantidadTotalRegistros"
+            [pageSize]="paginacionDto.registrosPorPagina"
+            [pageSizeOptions]="[5,10,50]"
+            class="mat-elevation-z8"
+            (page)="actualizarPaginacion($event)"
+        ></mat-paginator>
+    </ng-container>
+</app-listado-generico>
+}
+    
+
+</div>
+

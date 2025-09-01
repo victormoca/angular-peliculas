@@ -1,6 +1,8 @@
 export interface FiltroPeliculas {
     titulo: string,
     generoId: number,
-    proximosEntrenos: boolean,
+    proximosEstrenos: boolean,
     enCines: boolean
+    pagina: number
+    recordsPorPagina: number
 }

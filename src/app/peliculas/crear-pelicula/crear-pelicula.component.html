@@ -1,8 +1,17 @@
+<h2>Crear Pelicula</h2>
+
+@if (cinesUnSelected) {
+
+
+<app-moca-error [errors]="errores"></app-moca-error>
 <app-formulario-pelicula 
     (formPosted)="guardar($event)"
-    [itemsSelected]="itemsSelected"
-    [itemsUnSelected]="itemsUnSelected"
+    [generosSelected]="generosSelected"
+    [generosUnSelected]="generosUnSelected"
     [cinesSelected]="cinesSelected"
     [cinesUnSelected]="cinesUnSelected"
     [actoresSelected]="actoresSelected"
 ></app-formulario-pelicula>
+} @else {
+    <app-cargando></app-cargando>
+}

@@ -1,23 +1,17 @@
 import { Component } from '@angular/core';
-import { FormularioCineComponent } from "../formulario-cine/formulario-cine.component";
-import { CineCto, CineInfo } from '../cineInfo';
+import { CrearEntidadComponent } from "../../comun/componenetes/crear-entidad/crear-entidad.component";
+import { SERVICIO_CRUD_TOKEN } from '../../comun/proveedores/proveedores';
+import { CinesService } from '../cines.service';
+import { FormularioCineComponent } from '../formulario-cine/formulario-cine.component';
 
 @Component({
   selector: 'app-crear-cine',
-  imports: [FormularioCineComponent],
+  imports: [CrearEntidadComponent],
   templateUrl: './crear-cine.component.html',
-  styleUrl: './crear-cine.component.css'
+  styleUrl: './crear-cine.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass: CinesService}]
 })
 export class CrearCineComponent {
   
-  cineModel: CineCto = {
-    nombre: '',
-    latitud: 0,
-    longitud: 0
-  };
-
-  guardar(cineInfo: CineInfo) {
-    console.log('Guardando...');
-    console.log(cineInfo);
-  }
+  formularioCine = FormularioCineComponent;
 }

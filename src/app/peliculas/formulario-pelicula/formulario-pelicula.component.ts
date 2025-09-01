@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { PeliculaDTO } from '../pelicula';
+import { PeliculaCreacionDTO, PeliculaDTO } from '../pelicula';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { InputImgComponent } from "../../comun/componentes/input-img/input-img.component";
 import { SelectorMultipleComponent } from "../../comun/componentes/selector-multiple/selector-multiple.component";
@@ -41,10 +41,10 @@ export class FormularioPeliculaComponent implements OnInit {
   model: PeliculaDTO | undefined;
 
   @Input({required: true})
-  itemsSelected: Item[] = [];
+  generosSelected: Item[] = [];
 
   @Input({required: true})
-  itemsUnSelected: Item[] = [];
+  generosUnSelected: Item[] = [];
 
   @Input()
   cinesSelected: Item[] = [];
@@ -53,7 +53,7 @@ export class FormularioPeliculaComponent implements OnInit {
   cinesUnSelected: Item[] = [];
 
   @Output()
-  formPosted = new EventEmitter<PeliculaDTO>();
+  formPosted = new EventEmitter<PeliculaCreacionDTO>();
 
   @Input({required: true})
   actoresSelected: ActorSelected[] = [];
@@ -76,12 +76,20 @@ export class FormularioPeliculaComponent implements OnInit {
   }
 
   guardando() {
-    console.log('guardando...');
-    let posted = this.form.value as PeliculaDTO;
+    if(this.form.invalid) {
+      return;
+    }
+
+    let posted = this.form.value as PeliculaCreacionDTO;
     posted.fechaLanzamiento = new Date(this.form.controls.fechaLanzamiento.value ?? '');
-    posted.generosIds = this.itemsSelected.map(item => item.value);    
+    posted.generosIds = this.generosSelected.map(item => item.value);    
     posted.cinesIds = this.cinesSelected.map(item => item.value);
-    posted.actoresSelected = this.actoresSelected;
+    posted.actores = this.actoresSelected;
+
+    if(typeof posted.poster === 'string') {
+      posted.poster = undefined;
+    }
+
     this.formPosted.emit(posted);
   }
 

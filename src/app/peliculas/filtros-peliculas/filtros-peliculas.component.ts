@@ -9,6 +9,13 @@ import { ListadoPeliculasComponent } from "../listado-peliculas/listado-pelicula
 import { FiltroPeliculas } from './dataFilter';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { GeneroInfo } from '../../generos/generoInfo';
+import { PeliculaDTO } from '../pelicula';
+import { GenerosService } from '../../generos/generos.service';
+import { PeliculasService } from '../peliculas.service';
+import { PaginacionDto } from '../../comun/modelos/paginacionDto';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-filtros-peliculas',
@@ -19,83 +26,51 @@ import { ActivatedRoute } from '@angular/router';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
-    ListadoPeliculasComponent
+    ListadoPeliculasComponent,
+    MatPaginatorModule
 ],
   templateUrl: './filtros-peliculas.component.html',
   styleUrl: './filtros-peliculas.component.css'
 })
 export class FiltrosPeliculasComponent implements OnInit {
+  generosService = inject(GenerosService);
+  peliculaService = inject(PeliculasService);
+
   ngOnInit(): void {
-    this.peliculasOriginal = this.peliculas;
+    this.generosService.obtenerTodos().subscribe( generos => {
+      this.generos = generos;
 
-    this.filterForm.valueChanges.subscribe(value => {
-      let paramsFilter = value as FiltroPeliculas;
-      this.buscar(paramsFilter);
-      this.updateUrl(value as FiltroPeliculas);
-    })
+      this.readUrlParams();
+      this.buscar(this.filterForm.value as FiltroPeliculas);
 
-    this.readUrlParams();
-
+      this.filterForm.valueChanges
+      .pipe(
+        debounceTime(300)
+      )
+      .subscribe(value => {
+        let paramsFilter = value as FiltroPeliculas;
+        this.buscar(paramsFilter);
+        this.updateUrl(value as FiltroPeliculas);
+      })
+    });
   }
 
   formBuilder = inject(FormBuilder);
   location = inject(Location);
   activatedRoute = inject(ActivatedRoute)
   
-
-  filterForm = this.formBuilder.group({
+  private readonly valoresIniciales = {
     titulo: '',
     generoId: 0,
-    proximosEntrenos: false,
+    proximosEstrenos: false,
     enCines: false
-  });
+  }
+  filterForm = this.formBuilder.group(this.valoresIniciales);
   
-  generos = [
-    {id : 1, nombre: "Drama"},
-    {id : 2, nombre: "Acción"},
-    {id : 3, nombre: "Comedia"}
-  ];
-
-  peliculas = [
-    {
-      titulo: "Spider-Man",
-      fechaLanzamiento: new Date(),
-      precio : 345.32,
-      portada: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Spider-Man.jpg/450px-Spider-Man.jpg',
-      generoId: [1,2,3],
-      enCines: true,
-      proximosEntrenos: false,
-    },
-    {
-      titulo: "Moana",
-      fechaLanzamiento: new Date(),
-      precio: 156.3,
-      portada: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Moana_Disney_Parks.jpg/480px-Moana_Disney_Parks.jpg',
-      generoId: [3],
-      enCines: false,
-      proximosEntrenos: true,
-
-    },
-    {
-      titulo: "Tortugas Ninja",
-      fechaLanzamiento: new Date(),
-      precio: 15236.23,
-      portada: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Teenage_Mutant_Ninja_Turtles_%285234965966%29.jpg/480px-Teenage_Mutant_Ninja_Turtles_%285234965966%29.jpg',
-      generoId: [2,3],
-      enCines: true,
-      proximosEntrenos: false,
-    },
-    {
-      titulo: "Terminator",
-      fechaLanzamiento: new Date(),
-      precio: 56156.56,
-      portada: 'https://upload.wikimedia.org/wikipedia/en/3/3b/Spirit_Stallion_of_the_Cimarron_poster.jpg',
-      generoId: [1],
-      enCines: false,
-      proximosEntrenos: true,
-    },
-  ]
-  peliculasOriginal: any[] = [];
+  generos: GeneroInfo[] = [];
+  peliculas: PeliculaDTO[] = []
+  paginacionDto: PaginacionDto = {numeroPagina:1, registrosPorPagina:10};
+  cantidadTotalRegistros!: number;
 
   readUrlParams() {
    this.activatedRoute.queryParams.subscribe(params => {
@@ -104,7 +79,7 @@ export class FiltrosPeliculasComponent implements OnInit {
     const formValues = {
       titulo: params['titulo'] || '',
       generoId: Number(params['generoId']) || 0,
-      proximosEntrenos: params['proximosEntrenos'] === 'true',
+      proximosEstrenos: params['proximosEstrenos'] === 'true',
       enCines: params['enCines'] === 'true'
     };
     // Update form with URL parameters
@@ -113,30 +88,18 @@ export class FiltrosPeliculasComponent implements OnInit {
   }
 
   buscar(params: FiltroPeliculas) {
-    this.peliculas = this.peliculasOriginal;
-
-    if(params.titulo) {
-      this.peliculas = this.peliculas.filter(
-          p => p.titulo.toLocaleLowerCase().includes(params.titulo!.toLocaleLowerCase())
-      )
-    }
-
-    if(params.generoId) {
-      this.peliculas = this.peliculas.filter(p=> p.generoId.includes(params.generoId));
-    }
-
-    if(params.proximosEntrenos) {
-      this.peliculas = this.peliculas.filter(p=> p.proximosEntrenos);
-    }
-
-    if(params.enCines) {
-      this.peliculas = this.peliculas.filter(p=> p.enCines);
-    }
+    params.pagina = this.paginacionDto.numeroPagina;
+    params.recordsPorPagina = this.paginacionDto.registrosPorPagina;
+    this.peliculaService.filtrar(params).subscribe(respuesta => {
+      this.peliculas = respuesta.body as PeliculaDTO[];
+      const cabecera = respuesta.headers.get('cantidad-tota-registros') as string;
+      this.cantidadTotalRegistros = parseInt(cabecera, 10);
+    })
   }
 
   cleanForm() {
-    this.filterForm.reset();
-    this.peliculas = this.peliculasOriginal; 
+    this.filterForm.reset(this.valoresIniciales);
+    this.buscar(this.filterForm.value as FiltroPeliculas);
   }
 
   updateUrl(params: FiltroPeliculas) {
@@ -150,8 +113,8 @@ export class FiltrosPeliculasComponent implements OnInit {
       newParams.push('generoId=' + params.generoId);
     }
 
-    if(params.proximosEntrenos) {
-      newParams.push('proximosEntrenos=' + params.proximosEntrenos);
+    if(params.proximosEstrenos) {
+      newParams.push('proximosEstrenos=' + params.proximosEstrenos);
     }
 
     if(params.enCines) {
@@ -164,6 +127,11 @@ export class FiltrosPeliculasComponent implements OnInit {
       this.location.replaceState('');
     }
     
+  }
+
+  actualizarPaginacion(datos: PageEvent) {
+    this.paginacionDto = {numeroPagina: datos.pageIndex +1, registrosPorPagina: datos.pageSize};
+    this.buscar(this.filterForm.value as FiltroPeliculas);
   }
 
 }

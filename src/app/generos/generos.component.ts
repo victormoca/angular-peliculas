@@ -1,28 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { IndiceEntidadComponent } from "../comun/componentes/indice-entidad/indice-entidad.component";
+import { SERVICIO_CRUD_TOKEN } from '../comun/proveedores/proveedores';
 import { GenerosService } from './generos.service';
 
 @Component({
   selector: 'app-generos',
-  imports: [MatButtonModule],
+  imports: [
+    IndiceEntidadComponent
+],
   templateUrl: './generos.component.html',
-  styleUrl: './generos.component.css'
+  styleUrl: './generos.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass:GenerosService}]
 })
 export class GenerosComponent {
 
-  routerLink = inject(Router);
-  generosService = inject(GenerosService);
-
-  generos = this.generosService.obtenerTodos().subscribe(generos => {
-    console.log(generos);
-  }); 
-
-  constructor() {
-    console.log(this.generos);
-  }
-
-  crearGenero() {
-    this.routerLink.navigate(['/generos/crear']);
-  }
 }

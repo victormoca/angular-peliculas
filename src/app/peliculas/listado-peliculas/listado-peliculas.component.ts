@@ -1,24 +1,39 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 
 import { ListadoGenericoComponent } from "../../comun/componentes/listado-generico/listado-generico.component";
 
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { PeliculasService } from '../peliculas.service';
+import { AutorizadoComponent } from "../../seguridad/autorizado/autorizado.component";
 
 @Component({
   selector: 'app-listado-peliculas',
-  imports:  [
-              ListadoGenericoComponent, 
-              MatButtonModule
-            ],
+  imports: [
+    ListadoGenericoComponent,
+    MatButtonModule,
+    RouterLink,
+    SweetAlert2Module,
+    AutorizadoComponent
+],
   templateUrl: './listado-peliculas.component.html',
   styleUrl: './listado-peliculas.component.css'
 })
-export class ListadoPeliculasComponent implements OnInit {
+export class ListadoPeliculasComponent {
   @Input({required: true})
   peliculas! : any[];
-  
-  ngOnInit(): void {
-    
+  peliculasService = inject(PeliculasService);
+  @Output()
+  borrado = new EventEmitter<void>();
+
+
+  borrar(id: number) {
+    this.peliculasService.borrar(id).subscribe(() => {
+      this.borrado.emit();
+    })
   }
+
+
   
 }

@@ -1,35 +1,17 @@
-import { Component, inject } from '@angular/core';
-import {ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormularioGenerosComponent } from "../formulario-generos/formulario-generos.component";
+import { Component } from '@angular/core';
+import { SERVICIO_CRUD_TOKEN } from '../../comun/proveedores/proveedores';
 import { GenerosService } from '../generos.service';
-import { Router } from '@angular/router';
-import { GeneroInfo, GeneroInfoDto } from '../generoInfo';
+import { CrearEntidadComponent } from "../../comun/componenetes/crear-entidad/crear-entidad.component";
+import { FormularioGenerosComponent } from '../formulario-generos/formulario-generos.component';
 
 @Component({
   selector: 'app-crear-genero',
-  imports: [
-            ReactiveFormsModule, 
-            MatButtonModule, 
-            MatFormFieldModule, 
-            MatInputModule, 
-            FormularioGenerosComponent],
+  imports: [CrearEntidadComponent],
   templateUrl: './crear-genero.component.html',
-  styleUrl: './crear-genero.component.css'
+  styleUrl: './crear-genero.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass: GenerosService}]
 })
 
 export class CrearGeneroComponent {
-
-  generoInfo!: GeneroInfoDto;
-  router = inject(Router); 
-  generosService = inject(GenerosService);
-
-  guardarGenero(generoInfo: GeneroInfoDto) {
-    this.generosService.crear(generoInfo).subscribe(() => {
-      this.router.navigate(['/generos']);
-    });
-  }
-
+  formularioGeneros = FormularioGenerosComponent;
 }

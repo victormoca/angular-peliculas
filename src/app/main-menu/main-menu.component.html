@@ -9,25 +9,41 @@
             <mat-icon>search</mat-icon> Buscar Peliculas
         </a>
     </span>
-    <span>
-        <a mat-button routerLink="/generos">
-            <mat-icon>movie</mat-icon> Generos
-        </a>
-    </span>
-    <span>
-        <a mat-button routerLink="cines">
-            <mat-icon>theaters</mat-icon> Cines
-        </a>
-    </span>
-    <span>
-        <a mat-button routerLink="actores">
-            <mat-icon>person</mat-icon> Actores
-        </a>
-    </span>
-    <span><a mat-button routerLink="/peliculas/crear">
-        <mat-icon>videocam</mat-icon> Crear Pelicula
-    </a></span>
-    
+    <app-autorizado role="admin">
+        <ng-container autorizado>
+            <span>
+            <a mat-button routerLink="/generos">
+                <mat-icon>movie</mat-icon> Generos
+            </a>
+            </span>
+            <span>
+                <a mat-button routerLink="cines">
+                    <mat-icon>theaters</mat-icon> Cines
+                </a>
+            </span>
+            <span>
+                <a mat-button routerLink="actores">
+                    <mat-icon>person</mat-icon> Actores
+                </a>
+            </span>
+            <span><a mat-button routerLink="/peliculas/crear">
+                <mat-icon>videocam</mat-icon> Crear Pelicula
+            </a></span>
+        </ng-container>
+    </app-autorizado>
+    <div class="espacio"></div>
+    <div class="login">
+        <app-autorizado>
+            <ng-container autorizado>
+                Hola {{email}} | <a [routerLink]="[logout()]">Cerrar Sesión</a>
+            </ng-container>
+            <ng-container noAutorizado>
+                <a routerLink="/login">Login</a> | <a routerLink="/registrar">Registrar</a>
+            </ng-container>
+        </app-autorizado>
+
+        
+    </div>
 </mat-toolbar>
 
 

@@ -1,34 +1,20 @@
-import { Component, Input, numberAttribute, OnInit } from '@angular/core';
-import { ActorInfo, ActorInfoDto } from '../actor';
+import { Component, Input, numberAttribute } from '@angular/core';
 import { FormularioActoresComponent } from "../formulario-actores/formulario-actores.component";
+import { ActoresService } from '../../actores.service';
+import { SERVICIO_CRUD_TOKEN } from '../../comun/proveedores/proveedores';
+import { EditarEntidadComponent } from "../../comun/componentes/editar-entidad/editar-entidad.component";
 
 @Component({
   selector: 'app-editar-actor',
-  imports: [FormularioActoresComponent],
+  imports: [EditarEntidadComponent],
   templateUrl: './editar-actor.component.html',
-  styleUrl: './editar-actor.component.css'
+  styleUrl: './editar-actor.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass: ActoresService}]
 })
-export class EditarActorComponent implements OnInit {
-  actorInfo!: ActorInfo;
-
-  ngOnInit(): void {
-    this.actorInfo = {
-      id: this.id,
-      nombre: 'Actor Test',
-      fechaNacimiento: new Date(),
-      foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Nicolas_Cage_Deauville_2013.jpg/220px-Nicolas_Cage_Deauville_2013.jpg',
-    };
-  }
+export class EditarActorComponent {
 
   @Input({transform: numberAttribute})
   id!: number;
 
-  guardarActor(actorInfo: ActorInfoDto) {
-    if(!actorInfo) {
-      return;
-    }
-    console.log('Editando actor...');
-    console.log(actorInfo);
-  }
-
+  formularioActores? = FormularioActoresComponent;
 }

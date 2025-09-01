@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,8 @@ import { ActorSelected } from './ActorSelected';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { ActoresService } from '../../../actores.service';
+import { PeliculasService } from '../../../peliculas/peliculas.service';
 
 @Component({
   selector: 'app-autocomplete-actores',
@@ -23,31 +25,22 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
   templateUrl: './autocomplete-actores.component.html',
   styleUrl: './autocomplete-actores.component.css'
 })
-export class AutocompleteActoresComponent {
+export class AutocompleteActoresComponent implements OnInit {
+  ngOnInit(): void {
+    this.control.valueChanges.subscribe(valor => {
+      if(typeof valor === 'string' && valor) {
+        this.actoresService.obtenerPorNombre(valor).subscribe(actores => {
+          this.actores = actores;
+        })
+      }
+    })
+  }
   
   control = new FormControl();
-  actores : ActorSelected[] = [
-    {
-      id: 1,
-      nombre: 'Tom Holland',
-      personaje: '', 
-      foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Tom_Holland_at_KCA_2022.jpg/330px-Tom_Holland_at_KCA_2022.jpg',
-    },
-    {
-      id: 2,
-      nombre: 'Jennier Lawrance',
-      personaje: '',
-      foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Jennifer_Lawrence_in_2016.jpg/330px-Jennifer_Lawrence_in_2016.jpg',
-    },
-    { 
-      id: 3,
-      nombre: 'Bratt Pitt',
-      personaje: '',
-      foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Brad_Pitt-69858.jpg/330px-Brad_Pitt-69858.jpg',
-    }
-  ]
+  actores : ActorSelected[] = [];
   @Input({required: true})
   actoresSelected: ActorSelected[] = [];
+  actoresService = inject(ActoresService);
 
   columnsToShow = ['foto', 'nombre', 'personaje','acciones'];
   @ViewChild(MatTable) table!: MatTable<ActorSelected>;

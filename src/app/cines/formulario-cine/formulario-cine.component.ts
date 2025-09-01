@@ -24,14 +24,15 @@ import { Coordenada } from '../../comun/funciones/Coordenada';
 export class FormularioCineComponent implements OnInit {
   // Add this after ngOnInit
   ngOnInit(): void {
-    if(this.cineModel) {
-      this.cineForm.patchValue(this.cineModel);
+    if(this.infoModel) {
+      this.cineForm.patchValue(this.infoModel);
       
       // Initialize coordinates for the map
-      if (this.cineModel.latitud && this.cineModel.longitud) {
+      if (this.infoModel.latitud && this.infoModel.longitud) {
         this.coordenadasIniciales = [{
-          lat: this.cineModel.latitud,
-          lng: this.cineModel.longitud
+          lat: this.infoModel.latitud,
+          lng: this.infoModel.longitud,
+          texto: this.infoModel.nombre,
         }];
       }
     }
@@ -45,19 +46,24 @@ export class FormularioCineComponent implements OnInit {
   });
 
   @Input()
-  cineModel?: CineInfo;
+  infoModel?: CineInfo;
 
   @Input()
   // Add this property to your component class
   coordenadasIniciales: Coordenada[] = [];
 
   @Output()
-  cinePosted = new EventEmitter<CineInfo>();
+  posteoFormulario = new EventEmitter<CineInfo>();
 
   guardarCine() {
-    let posted = this.cineForm.value as CineInfo;
-    this.cinePosted.emit(posted);
+    const posted = this.cineForm.value as CineInfo;
+    if (!Number.isFinite(posted.latitud) || !Number.isFinite(posted.longitud)) {
+      alert("Debes seleccionar una ubicación válida");
+      return;
+    }
+    this.posteoFormulario.emit(posted);
   }
+
 
   validateNombre(): string {
     let input = this.cineForm.controls.nombre;
@@ -74,7 +80,6 @@ export class FormularioCineComponent implements OnInit {
         latitud: coordenadas[0].lat,
         longitud: coordenadas[0].lng
       });
-      console.log('Coordenadas actualizadas:', coordenadas[0]);
     }
   }
 }

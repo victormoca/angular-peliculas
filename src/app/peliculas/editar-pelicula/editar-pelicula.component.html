@@ -1,9 +1,14 @@
 <p for="">El id de la pelicula a editar es: {{ id }} </p>
+@if (cinesUnSelected && model && cinesSelected) {
 <app-formulario-pelicula 
     [model]="model" (formPosted)="guardar($event)"
-    [itemsSelected]="itemsSelected"
-    [itemsUnSelected]="itemsUnSelected"
+    [generosSelected]="generosSelected"
+    [generosUnSelected]="generosUnSelected"
     [cinesSelected]="cinesSelected"
     [cinesUnSelected]="cinesUnSelected"
     [actoresSelected]="actoresSelected"
 ></app-formulario-pelicula>
+}@else {
+    <app-cargando></app-cargando>
+}
+

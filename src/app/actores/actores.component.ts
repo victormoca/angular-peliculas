@@ -1,19 +1,15 @@
-import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { SERVICIO_CRUD_TOKEN } from '../comun/proveedores/proveedores';
+import { ActoresService } from '../actores.service';
+import { IndiceEntidadComponent } from "../comun/componentes/indice-entidad/indice-entidad.component";
 
 @Component({
   selector: 'app-actores',
-  imports: [MatButtonModule],
+  imports: [IndiceEntidadComponent],
   templateUrl: './actores.component.html',
-  styleUrl: './actores.component.css'
+  styleUrl: './actores.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass: ActoresService}]
 })
 export class ActoresComponent {
-
-  routerLink  = inject(Router);
-
-  crearActor() {
-    this.routerLink.navigate(['/actores/crear']);
-  }
 
 }

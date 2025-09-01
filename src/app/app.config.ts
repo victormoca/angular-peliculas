@@ -1,10 +1,11 @@
-import { ApplicationConfig, provideZoneChangeDetection, LOCALE_ID } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, LOCALE_ID, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './app-date-formats';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 // 👇 Registrar el idioma español
 import { registerLocaleData } from '@angular/common';
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
+    importProvidersFrom(SweetAlert2Module.forRoot()), // ✅ Se una singleton para el dialog de confirmación
 
     provideNativeDateAdapter(), // ✅ Usa el adaptador de fechas nativo
 

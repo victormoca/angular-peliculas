@@ -1,0 +1,18 @@
+<h1>Login</h1>
+<form [formGroup]="form" (submit)="login()">
+    <mat-form-field>
+        <mat-label>Correo</mat-label>
+        <input matInput [formControl]="form.controls.email" />
+        <mat-error>{{errorEmail()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <input matInput [formControl]="form.controls.password" />
+        <mat-error>{{errorPassword()}}</mat-error>
+    </mat-form-field>
+    <div>
+        <a href="" mat-raised-button routerLink="/">Cancelar</a>
+        <button mat-flat-button>Login</button>
+    </div>
+    
+</form>

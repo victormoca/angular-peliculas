@@ -1,6 +1,6 @@
-<p for="">El numbero de cine a editar es: {{ id }}</p>
-<app-formulario-cine
-    [cineModel]="cineModel"
-    (cinePosted)="guardar($event)"
-    
-></app-formulario-cine>
+<app-editar-entidad
+    titulo="Editar Cines"
+    [formulario]="formularioCine"
+    rutaEntidad="/cines/"
+    [id]="id"
+></app-editar-entidad>

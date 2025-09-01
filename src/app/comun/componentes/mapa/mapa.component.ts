@@ -1,85 +1,134 @@
-import { Component, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
-import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Coordenada } from '../../funciones/Coordenada';
-
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
   imports: [LeafletModule],
-  templateUrl: './mapa.component.html',
-  styleUrl: './mapa.component.css'
+  template: `<div #mapEl class="mapa"></div>`,
+  styleUrls: ['./mapa.component.css']
 })
-export class MapaComponent implements AfterViewInit {
+export class MapaComponent implements AfterViewInit, OnChanges {
+  @ViewChild('mapEl', { static: true }) mapEl!: ElementRef<HTMLDivElement>;
+
+  @Input() coordinates: Coordenada[] = [];
+  @Output() coordinatesChange = new EventEmitter<Coordenada[]>();
+  @Input() soloLectura? = false;
+
   private map!: L.Map;
+  private markers = L.layerGroup();
 
-  options = {
-    center: {
-      lng: -103.3496, // Default longitude for Guadalajara, Jalisco, Mexico
-      lat: 20.6597  // Default latitude for Guadalajara, Jalisco, Mexico
-    },
-    zoom: 12
-  };
+  // Configura los íconos por defecto (una sola vez)
+  private static initIcons = (() => {
+    // @ts-ignore
+    delete (L.Icon.Default.prototype as any)._getIconUrl;
 
-  markerOptions = {
-    icon: L.icon({
-      iconSize: [25, 41],
-      iconAnchor: [13, 41],
-      iconUrl: 'assets/leaflet/marker-icon.png',
-      shadowUrl: 'assets/leaflet/marker-shadow.png'
-    })
-  };
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      iconUrl:       'assets/leaflet/marker-icon.png',
+      shadowUrl:     'assets/leaflet/marker-shadow.png'
+    });
 
-  @Input()
-  coordinates: Coordenada[] = [];
-
-  @Output()
-  coordinatesChange = new EventEmitter<Coordenada[]>();
+    return true;
+  })();
 
   ngAfterViewInit(): void {
-    this.initializeMap();
-  }
+    const center = this.coordinates?.[0] ?? { lat: 20.6597, lng: -103.3496 }; // GDL
+    this.map = L.map(this.mapEl.nativeElement).setView([center.lat, center.lng], 12);
 
-  private initializeMap(): void {
-    if(this.coordinates && this.coordinates.length > 0) {
-      this.options.center = {
-        lng: this.coordinates[0].lng,
-        lat: this.coordinates[0].lat
-      };
-    }
-    this.map = L.map('map').setView([this.options.center.lat, this.options.center.lng], this.options.zoom);
-
-    // Add TileLayer to the map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
+      maxZoom: 50,
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
-    
-    // Add initial marker if coordinates exist
-    if(this.coordinates && this.coordinates.length > 0) {
-      const coord = this.coordinates[0];
-      L.marker([coord.lat, coord.lng], this.markerOptions).addTo(this.map);
+
+    this.markers.addTo(this.map);
+
+    // Pintar según modo
+    if (this.coordinates?.length) {
+      if (this.soloLectura) {
+        this.setMarkers(this.coordinates);
+        this.tryFitBounds();
+      } else {
+        this.setSingleMarker(this.coordinates[0]);
+      }
     }
-    
-    // Connect click event to handleMapClick method
-    this.map.on('click', (e: L.LeafletMouseEvent) => this.handleMapClick(e));
+
+    // Click: en soloLectura no hace nada; en edición deja un único marker y emite
+    this.map.on('click', (e: L.LeafletMouseEvent) => {
+      if (this.soloLectura) return;
+
+      const c = { lat: e.latlng.lat, lng: e.latlng.lng, texto: '' };
+      this.setSingleMarker(c);
+      this.coordinates = [c];
+      this.coordinatesChange.emit(this.coordinates);
+    });
+
+    // Corregir tamaño tras render
+    setTimeout(() => this.map.invalidateSize(), 0);
+    window.addEventListener('resize', () => this.map.invalidateSize());
   }
 
-  handleMapClick(event: L.LeafletMouseEvent): void {
-    const lat = event.latlng.lat;
-    const lng = event.latlng.lng;
-    
-    this.coordinates = [{ lat, lng }];
-    
-    // Limpiar marcadores anteriores
-    this.map.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        this.map.removeLayer(layer);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.map) return;
+
+    if (changes['coordinates']) {
+      if (this.coordinates?.length) {
+        if (this.soloLectura) {
+          this.setMarkers(this.coordinates);
+          this.tryFitBounds();
+        } else {
+          this.setSingleMarker(this.coordinates[0]);
+          this.map.setView([this.coordinates[0].lat, this.coordinates[0].lng], this.map.getZoom() || 12);
+        }
+      } else {
+        // Sin coords: limpia marcadores
+        this.markers.clearLayers();
+      }
+    }
+
+    if (changes['soloLectura'] && this.coordinates?.length) {
+      // Si cambia el modo, repintamos acorde
+      if (this.soloLectura) {
+        this.setMarkers(this.coordinates);
+        this.tryFitBounds();
+      } else {
+        this.setSingleMarker(this.coordinates[0]);
+      }
+    }
+  }
+
+  private setSingleMarker(c: Coordenada) {
+    this.markers.clearLayers();
+    L.marker([c.lat, c.lng]).addTo(this.markers);
+  }
+
+ private setMarkers(coords: Coordenada[]) {
+    this.markers.clearLayers();
+    coords.forEach(c => {
+      const marker = L.marker([c.lat, c.lng]);
+      if (this.soloLectura && c.texto) {
+        marker.bindPopup(c.texto, {autoClose: false, autoPan: false});
+      }
+      marker.addTo(this.markers);
+    });
+  }
+
+  private tryFitBounds() {
+    // Ajusta vista si hay varios marcadores (en soloLectura)
+    const layers = (this.markers as any)?._layers as Record<string, L.Layer> | undefined;
+    if (!layers) return;
+    const latlngs: L.LatLngExpression[] = [];
+    Object.values(layers).forEach(l => {
+      if ((l as any).getLatLng) {
+        latlngs.push((l as any).getLatLng());
       }
     });
-    
-    L.marker([lat, lng], this.markerOptions).addTo(this.map);
-    this.coordinatesChange.emit(this.coordinates);
+    if (latlngs.length > 1) {
+      this.map.fitBounds(L.latLngBounds(latlngs), { padding: [20, 20] });
+    } else if (latlngs.length === 1) {
+      this.map.setView(latlngs[0] as L.LatLngExpression, this.map.getZoom() || 12);
+    }
   }
 }

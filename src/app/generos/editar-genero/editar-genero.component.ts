@@ -1,12 +1,15 @@
-import { Component, Input, numberAttribute } from '@angular/core';
+import { Component, Input, numberAttribute, OnInit } from '@angular/core';
 import { FormularioGenerosComponent } from "../formulario-generos/formulario-generos.component";
-import { GeneroInfo, GeneroInfoDto } from '../generoInfo';
+import { GenerosService } from '../generos.service';
+import { SERVICIO_CRUD_TOKEN } from '../../comun/proveedores/proveedores';
+import { EditarEntidadComponent } from "../../comun/componentes/editar-entidad/editar-entidad.component";
 
 @Component({
   selector: 'app-editar-genero',
-  imports: [FormularioGenerosComponent],
+  imports: [EditarEntidadComponent],
   templateUrl: './editar-genero.component.html',
   styleUrl: './editar-genero.component.css',
+  providers: [{provide: SERVICIO_CRUD_TOKEN, useClass: GenerosService}]
 })
 
 export class EditarGeneroComponent {
@@ -14,14 +17,6 @@ export class EditarGeneroComponent {
   @Input({transform: numberAttribute})
   id!: number;
 
-  generoInfoLoaded : GeneroInfo = {
-    id : this.id,
-    nombre : "Nombre Test",
-  }
-
-  guardarGenero(generoInfo: GeneroInfoDto) {
-    console.log("Editando el genero...");
-    console.log(generoInfo);
-  }
+  formularioGenero? = FormularioGenerosComponent;
 
 }

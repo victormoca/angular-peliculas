@@ -14,7 +14,7 @@
     <app-input-img 
         title="Foto del Actor" 
         (archivoSeleccionado)="archivoSeleccionado($event)"
-        [srcImageInital]="actorModel.foto"
+        [srcImageInital]="infoModel?.foto"
     ></app-input-img>
     <div class="botones-form">
         <button [disabled]="form.invalid" mat-flat-button type="submit">Guardar</button>

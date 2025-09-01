@@ -12,25 +12,32 @@ import { EditarCineComponent } from './cines/editar-cine/editar-cine.component';
 import { EditarActorComponent } from './actores/editar-actor/editar-actor.component';
 import { EditarPeliculaComponent } from './peliculas/editar-pelicula/editar-pelicula.component';
 import { FiltrosPeliculasComponent } from './peliculas/filtros-peliculas/filtros-peliculas.component';
+import { DetallesPeliculaComponent } from './peliculas/detalles-pelicula/detalles-pelicula.component';
+import { LoginComponent } from './seguridad/login/login.component';
+import { esAdminGuard } from './comun/guards/es-admin.guard';
+import { RegistroComponent } from './seguridad/registro/registro.component';
 
 export const routes: Routes = [
     {path: '', component: LandingPageComponent},
+    {path:'login', component: LoginComponent},
+    {path:'registro', component: RegistroComponent},
 
-    {path:'generos', component: GenerosComponent},
-    {path:'generos/crear', component: CrearGeneroComponent},
-    {path:'generos/editar/:id', component: EditarGeneroComponent},
+    {path:'generos', component: GenerosComponent, canActivate: [esAdminGuard]},
+    {path:'generos/crear', component: CrearGeneroComponent, canActivate: [esAdminGuard]},
+    {path:'generos/editar/:id', component: EditarGeneroComponent, canActivate: [esAdminGuard]},
     
-    {path:'cines', component: CinesComponent},
-    {path:'cines/crear', component: CrearCineComponent},
-    {path:'cines/editar/:id', component: EditarCineComponent},
+    {path:'cines', component: CinesComponent, canActivate: [esAdminGuard]},
+    {path:'cines/crear', component: CrearCineComponent, canActivate: [esAdminGuard]},
+    {path:'cines/editar/:id', component: EditarCineComponent, canActivate: [esAdminGuard]},
 
-    {path:'actores', component: ActoresComponent},
-    {path:'actores/crear', component: CrearActoresComponent},
-    {path:'actores/editar/:id', component: EditarActorComponent},
+    {path:'actores', component: ActoresComponent, canActivate: [esAdminGuard]},
+    {path:'actores/crear', component: CrearActoresComponent, canActivate: [esAdminGuard]},
+    {path:'actores/editar/:id', component: EditarActorComponent, canActivate: [esAdminGuard]},
 
-    {path:'peliculas/crear', component: CrearPeliculaComponent},
-    {path:'peliculas/editar/:id', component: EditarPeliculaComponent},
+    {path:'peliculas/crear', component: CrearPeliculaComponent, canActivate: [esAdminGuard]},
+    {path:'peliculas/editar/:id', component: EditarPeliculaComponent, canActivate: [esAdminGuard]},
     {path:'peliculas/filtros', component: FiltrosPeliculasComponent},
+    {path:'pelicula/:id', component: DetallesPeliculaComponent},
 
     {path:'**', component: LandingPageComponent},
 ];

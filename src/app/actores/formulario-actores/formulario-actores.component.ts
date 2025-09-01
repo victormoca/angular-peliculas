@@ -26,16 +26,18 @@ import { InputImgComponent } from "../../comun/componentes/input-img/input-img.c
 })
 export class FormularioActoresComponent implements OnInit {
   ngOnInit(): void {
-    this.form.patchValue(this.actorModel);
+    if(this.infoModel){
+      this.form.patchValue(this.infoModel);
+    }
   }
   
   private formBuilder = inject(FormBuilder);
 
   @Output()
-  actorPosted = new EventEmitter<ActorInfoDto>(); 
+  posteoFormulario = new EventEmitter<ActorInfoDto>(); 
 
   @Input()
-  actorModel!: ActorInfo;
+  infoModel?: ActorInfo;
 
   form = this.formBuilder.group({
     nombre: ['', {validators: [Validators.required, ValidarLetraCapital()]} ],
@@ -73,12 +75,12 @@ export class FormularioActoresComponent implements OnInit {
     }
     const currentActor = this.form.value as ActorInfoDto;
     currentActor.fechaNacimiento = moment(currentActor.fechaNacimiento).toDate();
-    
+
     if(typeof currentActor.foto === 'string') {
       currentActor.foto = undefined;
     }
 
-    this.actorPosted.emit(currentActor);
+    this.posteoFormulario.emit(currentActor);
   }
 
   archivoSeleccionado(file: File) {

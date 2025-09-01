@@ -1,41 +1,48 @@
 <h2>Busca tu pelicula</h2>
-
- <form [formGroup]="filterForm">
-    <mat-form-field appearance="outline">
-        <mat-label>Titulo</mat-label>
-        <input matInput [formControl]="filterForm.controls.titulo">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Genero</mat-label>
-        <mat-select [formControl]="filterForm.controls.generoId">
-            <mat-option [value]="0">
-                    Selecciona una opción
-            </mat-option>
-            @for (item of generos; track $index) {
-                <mat-option [value]="item.id">
-                    {{item.nombre}}
+<div>
+    <form [formGroup]="filterForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Titulo</mat-label>
+            <input matInput [formControl]="filterForm.controls.titulo">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Genero</mat-label>
+            <mat-select [formControl]="filterForm.controls.generoId">
+                <mat-option [value]="0">
+                        Selecciona una opción
                 </mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    
-    <div>
-        <mat-checkbox [formControl]="filterForm.controls.proximosEntrenos">
-            Proximos estrenos
-        </mat-checkbox>
-    </div>
-    <div>
-        <mat-checkbox [formControl]="filterForm.controls.enCines">
-            En cines
-        </mat-checkbox>
+                @for (item of generos; track $index) {
+                    <mat-option [value]="item.id">
+                        {{item.nombre}}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        
+        <div>
+            <mat-checkbox [formControl]="filterForm.controls.proximosEstrenos">
+                Proximos estrenos
+            </mat-checkbox>
+        </div>
+        <div>
+            <mat-checkbox [formControl]="filterForm.controls.enCines">
+                En cines
+            </mat-checkbox>
+        </div>
+
+        <div class="botones-form">
+            <button mat-flat-button (click)="cleanForm()" class="danger">Limpiar</button>
+        </div>
+        
+    </form>
+
+    <div class="listado-peliculas">
+        <app-listado-peliculas [peliculas]="peliculas"></app-listado-peliculas>
     </div>
 
-    <div class="botones-form">
-        <button mat-flat-button (click)="cleanForm()" class="danger">Limpiar</button>
-    </div>
-    
- </form>
-
- <div class="listado-peliculas">
-    <app-listado-peliculas [peliculas]="peliculas"></app-listado-peliculas>
+    <mat-paginator
+        showFirstLastButtons [length]="cantidadTotalRegistros" [pageIndex]="paginacionDto.numeroPagina"
+        [pageSize]="paginacionDto.registrosPorPagina" [pageSizeOptions]="[5, 10, 50]" class="mat-elevation-z8"
+        (page)="actualizarPaginacion($event)"
+    ></mat-paginator>
 </div>

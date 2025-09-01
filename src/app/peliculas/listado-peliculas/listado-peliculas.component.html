@@ -3,20 +3,30 @@
     <div class="contenido-peliculas">
       @for (pelicula of peliculas; track $index) {
         <div class="contenido-pelicula">
-          <a href="">
-            @if (pelicula.portada) {
-              <img src="{{ pelicula.portada }}" width="220" height="240" alt="">
+          <a href="" [routerLink]="['/pelicula', pelicula.id]">
+            @if (pelicula.poster) {
+              <img src="{{ pelicula.poster }}" width="220" height="240" alt="">
             } @else {
-              <img src="default.jpg" width="220" height="240" alt="">
+              <img src="assets/default.jpg" width="220" height="240" alt="">
             }
           </a>
-          <a href="">
+          <a href="" [routerLink]="['/pelicula', pelicula.id]">
             <h3 class="titulo-pelicula">{{ pelicula.titulo }}</h3>
           </a>
-          <div>
-            <button mat-flat-button type="button">Editar</button>
-            <button mat-flat-button class="danger" style="margin-left: 1rem;" type="button">Eliminar</button>
-          </div>
+          <app-autorizado role="admin">
+            <ng-container autorizado>
+              <div>
+                <button mat-flat-button type="button" [routerLink]="['/peliculas/editar', pelicula.id]"
+                >Editar</button>
+                <button mat-flat-button class="danger" style="margin-left: 1rem;" type="button"
+                [swal]="{title: 'Confirmación', text: 'Desea borrar el registro?', showCancelButton: true}"
+                (confirm)="borrar(pelicula.id)"
+                >Eliminar</button>
+              </div>
+            </ng-container>
+            
+          </app-autorizado>
+          
         </div>
       }
     </div>

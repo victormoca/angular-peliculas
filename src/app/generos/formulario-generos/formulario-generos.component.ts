@@ -6,35 +6,41 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { ValidarLetraCapital } from '../../comun/funciones/validaciones';
 import { GeneroInfoDto } from '../generoInfo';
+import { MocaErrorComponent } from "../../comun/componentes/moca-error/moca-error.component";
 
 @Component({
   selector: 'app-formulario-generos',
-  imports: [ReactiveFormsModule, 
-            RouterLink, 
-            MatButtonModule, 
-            MatFormFieldModule, 
-            MatInputModule,
-          ],
+  imports: [ReactiveFormsModule,
+    RouterLink,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule, MocaErrorComponent],
   templateUrl: './formulario-generos.component.html',
   styleUrl: './formulario-generos.component.css'
 })
 export class FormularioGenerosComponent implements OnInit {
   ngOnInit(): void {
-    this.generoForm.patchValue(this.modelInfoLoaded);
+    if(this.infoModel){
+      this.generoForm.patchValue(this.infoModel);
+    }
   }
 
   private formBuilder = inject(FormBuilder);
 
   @Input()
-  modelInfoLoaded! : GeneroInfoDto;
+  infoModel? : GeneroInfoDto;
+
+  @Input()
+  errors!: string[];
 
   @Output()
-  generoFormPosted = new EventEmitter<GeneroInfoDto>;
+  posteoFormulario = new EventEmitter<GeneroInfoDto>;
   
   generoForm = this.formBuilder.group({
     nombre: ['', {validators: [
       Validators.required,
       ValidarLetraCapital(),
+      Validators.maxLength(50)
     ]}],
   });
 
@@ -48,11 +54,15 @@ export class FormularioGenerosComponent implements OnInit {
       return input.getError('validarLetraCapital').mensaje;
     }
 
+    if(input.hasError('maxlength')) {
+      return 'El campo no puede tener mas de '+ input.getError('maxlength').requiredLength +' caracteres';
+    }
+
     return '';
   }
 
   guardarGenero() {
     const generoInfo = this.generoForm.value as GeneroInfoDto;
-    this.generoFormPosted.emit(generoInfo);
+    this.posteoFormulario.emit(generoInfo);
   }
 }

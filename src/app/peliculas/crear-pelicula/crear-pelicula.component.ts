@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PeliculaCreacionDTO, PeliculaDTO } from '../pelicula';
 import { FormularioPeliculaComponent } from "../formulario-pelicula/formulario-pelicula.component";
 import { Item } from '../../comun/componentes/selector-multiple/Item';
 import { ActorSelected } from '../../comun/componentes/autocomplete-actores/ActorSelected';
+import { PeliculasService } from '../peliculas.service';
+import { Router } from '@angular/router';
+import { errorToArrayMessage } from '../../comun/funciones/errorToArrayMessage';
+import { MocaErrorComponent } from "../../comun/componentes/moca-error/moca-error.component";
+import { CargandoComponent } from "../../comun/componentes/cargando/cargando.component";
 
 @Component({
   selector: 'app-crear-pelicula',
-  imports: [FormularioPeliculaComponent],
+  imports: [FormularioPeliculaComponent, MocaErrorComponent, CargandoComponent],
   templateUrl: './crear-pelicula.component.html',
   styleUrl: './crear-pelicula.component.css'
 })
@@ -19,25 +24,41 @@ export class CrearPeliculaComponent {
     poster: null,
   }
 
-  itemsSelected: Item[] = [];
+  generosSelected: Item[] = [];
   cinesSelected: Item[] = [];
+  generosUnSelected: Item[] = []
+  cinesUnSelected: Item[] = []
   actoresSelected: ActorSelected[] = [];
-  itemsUnSelected = [
-    {label: 'Terror',value: 1},
-    {label: 'Acción',value: 2},
-    {label: 'Comedia',value: 3},
-    {label: 'Drama',value: 4},
-  ]
-  cinesUnSelected = [
-    {label: 'Cine 1',value: 1},
-    {label: 'Cine 2',value: 2},
-    {label: 'Cine 3',value: 3},
-    {label: 'Cine 4',value: 4},
-  ]
+  peliculaService = inject(PeliculasService);
+  router = inject(Router);
+  errores: string[] = [];
 
-  guardar(pelicula: PeliculaDTO) {
-    console.log('guardado');
+  constructor() {
+    this.peliculaService.createGet().subscribe(modelo => {
+      this.generosUnSelected = modelo.generos.map(
+        genero => {
+          return <Item>{value: genero.id, label: genero.nombre};
+        }
+      )
+
+      this.cinesUnSelected = modelo.cines.map(cine => {
+        return <Item>{value: cine.id, label: cine.nombre}
+      })
+    })
+  }
+
+  guardar(pelicula: PeliculaCreacionDTO) {
     console.log(pelicula);
+    this.peliculaService.crear(pelicula).subscribe({
+      next: pelicula => {
+        console.log(pelicula);
+        this.router.navigate(['/']);
+      },
+      error: e => {
+        const errores = errorToArrayMessage(e);
+        this.errores = errores;
+      }
+    })
   }
 
 }

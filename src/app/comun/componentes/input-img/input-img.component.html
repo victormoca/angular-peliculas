@@ -1,6 +1,6 @@
 <p>{{ title }}</p>
 
-<button mat-raised-button (click)="inputImgFile.click()">Selecciona una imagen</button>
+<button type="button" mat-raised-button (click)="inputImgFile.click()">Selecciona una imagen</button>
 <input type="file" accept="img*/" (change)="processImage($event)"  #inputImgFile hidden>
 
 <div>
