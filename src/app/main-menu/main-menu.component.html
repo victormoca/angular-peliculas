@@ -29,16 +29,19 @@
             <span><a mat-button routerLink="/peliculas/crear">
                 <mat-icon>videocam</mat-icon> Crear Pelicula
             </a></span>
+            <span><a mat-button routerLink="/usuarios">
+                <mat-icon>videocam</mat-icon> Usuarios
+            </a></span>
         </ng-container>
     </app-autorizado>
     <div class="espacio"></div>
     <div class="login">
         <app-autorizado>
             <ng-container autorizado>
-                Hola {{email}} | <a [routerLink]="[logout()]">Cerrar Sesión</a>
+                <span>Hola, {{this.seguridadService.getCampoToken('email')}} |</span>  <a href="#" (click)="logout()"> Cerrar Sesión</a>
             </ng-container>
             <ng-container noAutorizado>
-                <a routerLink="/login">Login</a> | <a routerLink="/registrar">Registrar</a>
+                <a routerLink="/login">Login</a> | <a routerLink="/registro">Registrar</a>
             </ng-container>
         </app-autorizado>
 

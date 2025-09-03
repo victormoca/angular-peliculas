@@ -15,12 +15,16 @@ export class RatingComponent implements OnInit {
   @Output()
   rated = new EventEmitter<number>();
   
-  ratingArray: number[] = [];
+  @Input()
   ratingSelected : number = 0;
+  
+  
+  ratingArray: number[] = [];
   ratingBefore: number = 0;
   
   ngOnInit(): void {
     this.ratingArray = Array(this.maxrating).fill(0);
+    this.ratingBefore = this.ratingSelected;
   }
 
   triggerMouseEnter(index: number) {

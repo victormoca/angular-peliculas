@@ -15,10 +15,9 @@ import { SeguridadService } from '../seguridad/seguridad.service';
 })
 export class MainMenuComponent {
   seguridadService = inject(SeguridadService);
-  email?: string;
 
   public constructor() {
-    this.email = this.seguridadService.getCampoToken('email');
+
   }
 
   logout() {

@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
-import { CredencialesUsuariosDto, ResponseAutenticacionDto, UsuarioJwt } from './seguridad';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { CredencialesUsuariosDto, ResponseAutenticacionDto, UsuarioDto } from './seguridad';
 import { Observable, tap } from 'rxjs';
+import { PaginacionDto } from '../comun/modelos/paginacionDto';
+import { convertToHttpParams } from '../comun/funciones/convertToHttpParams';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,23 @@ export class SeguridadService {
 
   
   constructor() { }
+
+  obtenerUsuariosPaginados(paginacion : PaginacionDto): Observable<HttpResponse<UsuarioDto[]>> {
+    let queryParams = convertToHttpParams(paginacion);
+    return this.http.get<UsuarioDto[]>(this.baseURL + '/ListadoUsuarios', {params: queryParams, observe: 'response'});
+  }
+
+  hacerAdmin(email: string) {
+    return this.http.post(this.baseURL + '/haceradmin', {email});
+  }
+
+  removerAdmin(email: string) {
+    return this.http.post(this.baseURL + '/removeradmin', {email});
+  }
+
+  obtenerToken(): string | null {
+    return localStorage.getItem(this.llaveToken);
+  }
 
   public registrar(credenciales: CredencialesUsuariosDto) : Observable<ResponseAutenticacionDto> {
     return this.http.post<ResponseAutenticacionDto>(this.baseURL + '/registrar', credenciales)
@@ -75,6 +94,11 @@ export class SeguridadService {
   }
 
   public getRole(): string {
-    return 'admin';
+    const esAdmin = this.getCampoToken('esadmin');
+    if(esAdmin) {
+      return 'admin'
+    } else{
+      return '';
+    }
   }
 }

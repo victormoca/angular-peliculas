@@ -5,7 +5,12 @@
             @for (genero of pelicula.generos; track $index) {
                 <mat-chip-option [routerLink]="['/peliculas/filtros']" [queryParams]="{generoId: genero.id}">{{genero.nombre}}</mat-chip-option>
             }
-        </mat-chip-listbox> | {{pelicula.fechaLanzamiento.toDateString()}} | Promedio: 0.0 | tu voto: 0.0
+        </mat-chip-listbox> | {{pelicula.fechaLanzamiento.toDateString()}} | 
+        Promedio: {{pelicula.promedioVoto}} | 
+        tu voto: <app-rating [maxrating]="5" 
+        (rated)="puntuar($event)" 
+        [ratingSelected]="pelicula.votoUsuario"
+        ></app-rating>
 
         <div style="display: flex;">
             <span style="display: inline-block; margin-right: 1rem;">

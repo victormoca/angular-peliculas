@@ -22,6 +22,8 @@ export class CrearPeliculaComponent {
     trailer: '',
     fechaLanzamiento: new Date(), 
     poster: null,
+    votoUsuario: 0,
+    promedioVoto: 0
   }
 
   generosSelected: Item[] = [];

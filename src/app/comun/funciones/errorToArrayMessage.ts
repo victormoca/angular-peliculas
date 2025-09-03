@@ -7,3 +7,13 @@ export function errorToArrayMessage(e: any): string[] {
 
     return result;
 }
+
+export function extraerErroresIdentity(obj: any) : string[] {
+    let mensajesError: string[] = [];
+
+    for (let i = 0; i < obj.error.length; i++) {
+        const element = obj.error[i];
+        mensajesError.push(element.description);
+    }
+    return mensajesError;
+}

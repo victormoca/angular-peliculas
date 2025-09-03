@@ -22,6 +22,9 @@ export interface PeliculaDTO{
     generos?: GeneroInfo[];
     cines?: CineInfo[];
     actores?: ActorSelected[];
+
+    votoUsuario:  number;
+    promedioVoto: number;
 }
 
 export interface PeliculasPostGetDTO {

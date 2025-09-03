@@ -11,3 +11,7 @@ export interface CredencialesUsuariosDto {
 export interface UsuarioJwt {
     nombre: string
 }
+
+export interface UsuarioDto {
+    email: string;
+}

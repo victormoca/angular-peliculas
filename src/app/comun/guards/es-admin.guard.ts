@@ -9,7 +9,9 @@ export const esAdminGuard: CanActivateFn = (route, state) => {
   if(estaLogueado && seguridadService.getRole() === 'admin') {
     return true;
   } 
-    
-  router.navigate(['/login']);
+  
+  router.navigate(['/login']);    
+
+  
   return false;
 };

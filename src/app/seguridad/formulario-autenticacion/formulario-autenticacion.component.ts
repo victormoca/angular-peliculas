@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,10 @@ export class FormularioAutenticacionComponent {
   credecialesInfo?: CredencialesUsuariosDto;
   errores?: string[];
   formBuilder = inject(FormBuilder);
+
+  @Input({required: true})
+  titulo!:string;
+
   @Output()
   posteoFormulario = new EventEmitter<CredencialesUsuariosDto>();
 

@@ -1,12 +1,11 @@
 import { Component, AfterViewInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Coordenada } from '../../funciones/Coordenada';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [LeafletModule],
+  imports: [],
   template: `<div #mapEl class="mapa"></div>`,
   styleUrls: ['./mapa.component.css']
 })
