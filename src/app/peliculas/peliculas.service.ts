@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResourceFn, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { LandingPageDTO, PeliculaCreacionDTO, PeliculaDTO, PeliculasPostGetDTO, PeliculasPutGetDto } from './pelicula';
 import { formatDiagnosticsWithColorAndContext } from 'typescript';

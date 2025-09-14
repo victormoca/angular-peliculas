@@ -10,6 +10,7 @@ import { SelectorMultipleComponent } from "../../comun/componentes/selector-mult
 import { Item } from '../../comun/componentes/selector-multiple/Item';
 import { AutocompleteActoresComponent } from "../../comun/componentes/autocomplete-actores/autocomplete-actores.component";
 import { ActorSelected } from '../../comun/componentes/autocomplete-actores/ActorSelected';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-formulario-pelicula',
@@ -22,7 +23,8 @@ import { ActorSelected } from '../../comun/componentes/autocomplete-actores/Acto
     MatDatepickerModule,
     InputImgComponent,
     SelectorMultipleComponent,
-    AutocompleteActoresComponent
+    AutocompleteActoresComponent,
+    RouterLink
 ],
   templateUrl: './formulario-pelicula.component.html',
   styleUrl: './formulario-pelicula.component.css'

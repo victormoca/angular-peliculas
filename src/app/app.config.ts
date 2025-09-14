@@ -7,10 +7,12 @@ import { MY_DATE_FORMATS } from './app-date-formats';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
+
 // 👇 Registrar el idioma español
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { authInterceptor } from './seguridad/registro/token-interceptor-http';
+import { imagenUrlInterceptor } from './comun/interceptors/imagen-url.interceptor';
 
 registerLocaleData(localeEs); // ✅ Requerido para es-MX
 
@@ -19,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, imagenUrlInterceptor])),
     importProvidersFrom(SweetAlert2Module.forRoot()), // ✅ Se una singleton para el dialog de confirmación
 
     provideNativeDateAdapter(), // ✅ Usa el adaptador de fechas nativo
