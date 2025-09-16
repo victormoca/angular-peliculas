@@ -1,6 +1,6 @@
 <form (submit)="guardarGenero()" [formGroup]="generoForm">
     <app-moca-error [errors]="errors"></app-moca-error>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
         <mat-label for="">Nombre</mat-label>
         <input matInput 
                 [formControl]="generoForm.controls.nombre"

@@ -1,11 +1,11 @@
 <h2>Busca tu pelicula</h2>
 <div>
     <form [formGroup]="filterForm">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>Titulo</mat-label>
             <input matInput [formControl]="filterForm.controls.titulo">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>Genero</mat-label>
             <mat-select [formControl]="filterForm.controls.generoId">
                 <mat-option [value]="0">

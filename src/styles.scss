@@ -1,28 +1,99 @@
 @use '@angular/material' as mat;
 
+// Core styles (typography, density tokens, etc.)
+@include mat.core();
 
+// Material 3 theme definitions
+$theme-azure-blue: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+));
+
+$theme-rose-red: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$rose-palette,
+    tertiary: mat.$red-palette,
+  ),
+));
+
+$theme-magenta-violet: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$magenta-palette,
+    tertiary: mat.$violet-palette,
+  ),
+));
+
+// Apply base theme globally to avoid duplicated typography/density
+:root {
+  @include mat.all-component-themes($theme-azure-blue);
+}
+
+// Scope per-theme customizations & alternate color overrides
+.theme-azure-blue {
+  .app-header {
+    background-color: mat.get-theme-color($theme-azure-blue, surface-container-low);
+    color: mat.get-theme-color($theme-azure-blue, on-surface);
+    box-shadow: inset 0 -2px 0 0 mat.get-theme-color($theme-azure-blue, primary);
+  }
+  .app-sidenav {
+    background-color: mat.get-theme-color($theme-azure-blue, surface);
+  }
+  .mat-nav-list a.active {
+    background-color: mat.get-theme-color($theme-azure-blue, primary-container);
+    color: mat.get-theme-color($theme-azure-blue, on-primary-container);
+  }
+}
+
+.theme-rose-red {
+  // Only override colors for this alternate theme
+  @include mat.all-component-colors($theme-rose-red);
+  .app-header {
+    background-color: mat.get-theme-color($theme-rose-red, surface-container-low);
+    color: mat.get-theme-color($theme-rose-red, on-surface);
+    box-shadow: inset 0 -2px 0 0 mat.get-theme-color($theme-rose-red, primary);
+  }
+  .app-sidenav {
+    background-color: mat.get-theme-color($theme-rose-red, surface);
+  }
+  .mat-nav-list a.active {
+    background-color: mat.get-theme-color($theme-rose-red, primary-container);
+    color: mat.get-theme-color($theme-rose-red, on-primary-container);
+  }
+}
+
+.theme-magenta-violet {
+  // Only override colors for this alternate theme
+  @include mat.all-component-colors($theme-magenta-violet);
+  .app-header {
+    background-color: mat.get-theme-color($theme-magenta-violet, surface-container-low);
+    color: mat.get-theme-color($theme-magenta-violet, on-surface);
+    box-shadow: inset 0 -2px 0 0 mat.get-theme-color($theme-magenta-violet, primary);
+  }
+  .app-sidenav {
+    background-color: mat.get-theme-color($theme-magenta-violet, surface);
+  }
+  .mat-nav-list a.active {
+    background-color: mat.get-theme-color($theme-magenta-violet, primary-container);
+    color: mat.get-theme-color($theme-magenta-violet, on-primary-container);
+  }
+}
+
+// Utilidades existentes
 .primary {
-    @include mat.theme (
-        (
-            color : mat.$azure-palette,
-        )
-    )
+  @include mat.theme((color: mat.$azure-palette));
 }
 
 .secondary {
-    @include mat.theme(
-        (
-            color: mat.$orange-palette,
-        )
-    )
+  @include mat.theme((color: mat.$orange-palette));
 }
 
 .danger {
-    @include mat.theme(
-        (
-            color: mat.$red-palette,
-        )
-    )
+  @include mat.theme((color: mat.$red-palette));
 }
 
 .mapa { width: 100%; height: 400px; }

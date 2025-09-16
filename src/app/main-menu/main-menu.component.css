@@ -1,14 +1,98 @@
-mat-toolbar span {
-    margin-left: 1rem;
-}
-.login a {
-    text-decoration: none;
+/* Layout container occupies full viewport height */
+:host {
+  display: block;
+  --app-header-height: 64px;
 }
 
-.espacio {
-    width: 77%;
+@media (max-width: 599px) {
+  :host { --app-header-height: 56px; }
+}
+
+.app-container {
+  height: calc(100vh - var(--app-header-height));
+}
+
+/* Sidenav width for desktop */
+.app-sidenav {
+  width: 260px;
+}
+
+/* Toolbar spacing and login alignment */
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.app-header {
+  border-bottom: 2px solid rgba(0,0,0,0.08);
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-left: 8px;
+}
+
+.theme-select {
+  width: 220px;
+  margin-right: 12px;
+}
+
+/* theme-select inside header already sized above */
+
+.login a {
+  text-decoration: none;
 }
 
 .login {
-    font-size: 14px;
+  font-size: 14px;
+}
+
+/* Content padding */
+.app-content {
+  padding: 16px;
+}
+
+/* Active nav item custom look */
+.mat-nav-list a.active {
+  border-left: 4px solid currentColor;
+}
+
+.user-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: stretch; /* iguala alturas entre avatar e info */
+  column-gap: 12px;
+  padding: 16px;
+}
+
+.avatar {
+  width: 64px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 32px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra verticalmente name + logout */
+  min-height: 64px; /* asegura altura comparable al avatar */
+}
+
+.user-info .name {
+  font-weight: 600;
+}
+
+.logout-link,
+.auth-links a {
+  font-size: 13px;
+  text-decoration: none;
+  margin-top: 2px;
 }

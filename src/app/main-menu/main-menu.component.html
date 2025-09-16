@@ -1,53 +1,73 @@
-<mat-toolbar>
-    <span>
-        <a mat-button routerLink="">
-            <mat-icon>home</mat-icon> Home
-        </a>
-    </span>
-    <span>
-        <a mat-button routerLink="peliculas/filtros">
-            <mat-icon>search</mat-icon> Buscar Peliculas
-        </a>
-    </span>
-    <app-autorizado role="admin">
-        <ng-container autorizado>
-            <span>
-            <a mat-button routerLink="/generos">
-                <mat-icon>movie</mat-icon> Generos
-            </a>
-            </span>
-            <span>
-                <a mat-button routerLink="cines">
-                    <mat-icon>theaters</mat-icon> Cines
-                </a>
-            </span>
-            <span>
-                <a mat-button routerLink="actores">
-                    <mat-icon>person</mat-icon> Actores
-                </a>
-            </span>
-            <span><a mat-button routerLink="/peliculas/crear">
-                <mat-icon>videocam</mat-icon> Crear Pelicula
-            </a></span>
-            <span><a mat-button routerLink="/usuarios">
-                <mat-icon>videocam</mat-icon> Usuarios
-            </a></span>
-        </ng-container>
-    </app-autorizado>
-    <div class="espacio"></div>
-    <div class="login">
-        <app-autorizado>
-            <ng-container autorizado>
-                <span>Hola, {{this.seguridadService.getCampoToken('email')}} |</span>  <a href="#" (click)="logout()"> Cerrar Sesión</a>
-            </ng-container>
-            <ng-container noAutorizado>
-                <a routerLink="/login">Login</a> | <a routerLink="/registro">Registrar</a>
-            </ng-container>
-        </app-autorizado>
-
-        
-    </div>
+<mat-toolbar class="app-header mat-elevation-z2">
+  <button mat-icon-button (click)="drawer?.toggle()" aria-label="Abrir/cerrar menú">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="brand">PLECTON</span>
+  <span class="spacer"></span>
+  <mat-form-field class="theme-select" subscriptSizing="dynamic">
+    <mat-select [value]="themeService.theme" (valueChange)="themeService.setTheme($event)">
+      <mat-option *ngFor="let t of themes" [value]="t.key">{{ t.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </mat-toolbar>
 
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #drawer [mode]="isHandset ? 'over' : 'side'" [opened]="!isHandset && drawerOpened" class="app-sidenav">
+    <div class="user-card">
+      <div class="avatar"><mat-icon>person</mat-icon></div>
+      <div class="user-info">
+        <app-autorizado>
+          <ng-container autorizado>
+            <div class="name">{{ this.seguridadService.getCampoToken('name') }}</div>
+            <a class="logout-link" href="#" (click)="logout()">Cerrar Sesión</a>
+          </ng-container>
+          <ng-container noAutorizado>
+            <div class="name">Invitado</div>
+            <div class="auth-links"><a routerLink="/login">Login</a> | <a routerLink="/registro">Registrar</a></div>
+          </ng-container>
+        </app-autorizado>
+      </div>
+    </div>
+    <mat-nav-list>
+      <a mat-list-item routerLink="" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Home</span>
+      </a>
+      <a mat-list-item routerLink="peliculas/filtros" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+        <mat-icon matListItemIcon>search</mat-icon>
+        <span matListItemTitle>Buscar Peliculas</span>
+      </a>
 
+      <app-autorizado role="admin">
+        <ng-container autorizado>
+          <a mat-list-item routerLink="/generos" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+            <mat-icon matListItemIcon>movie</mat-icon>
+            <span matListItemTitle>Generos</span>
+          </a>
+          <a mat-list-item routerLink="cines" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+            <mat-icon matListItemIcon>theaters</mat-icon>
+            <span matListItemTitle>Cines</span>
+          </a>
+          <a mat-list-item routerLink="actores" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+            <mat-icon matListItemIcon>person</mat-icon>
+            <span matListItemTitle>Actores</span>
+          </a>
+          <a mat-list-item routerLink="/peliculas/crear" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+            <mat-icon matListItemIcon>videocam</mat-icon>
+            <span matListItemTitle>Crear Pelicula</span>
+          </a>
+          <a mat-list-item routerLink="/usuarios" routerLinkActive="active" (click)="isHandset && drawer?.close()">
+            <mat-icon matListItemIcon>group</mat-icon>
+            <span matListItemTitle>Usuarios</span>
+          </a>
+        </ng-container>
+      </app-autorizado>
+    </mat-nav-list>
+  </mat-sidenav>
 
+  <mat-sidenav-content>
+    <div class="app-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
